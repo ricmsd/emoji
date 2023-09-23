@@ -101,7 +101,6 @@ export class AppComponent implements OnInit {
     this.detailedEmoji = this.selectedEmoji;
   }
   public onRowMouseEnter(emoji: any): void {
-    console.log('mouseenter');
     if (!this.selectedEmoji) {
       this.detailedEmoji = emoji;
     }
