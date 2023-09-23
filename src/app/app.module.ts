@@ -9,6 +9,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { TableModule } from 'primeng/table';
 import { TreeSelectModule } from 'primeng/treeselect';
 import { ButtonModule } from 'primeng/button';
+import { ToastModule } from 'primeng/toast';
 
 import { AppComponent } from './app.component';
 import { EmojiService } from 'src/service/emoji.service';
@@ -29,6 +30,7 @@ import { EmojiService } from 'src/service/emoji.service';
     TableModule,
     TreeSelectModule,
     ButtonModule,
+    ToastModule,
   ],
   providers: [EmojiService],
   bootstrap: [AppComponent]

@@ -34,7 +34,9 @@
         <tr class="footer">
             <td colspan="2">
                 <div class="grid flex-nowrap" style="margin: 0;">
-                    <div class="col-fixed" style="width: 250px; font-size: 10em;">{{ detailedEmoji?.emoji }}</div>
+                    <div class="col-fixed emoji" style="width: 250px; font-size: 10em;">
+                        <a href="#" (click)="writeText(detailedEmoji?.emoji)">{{ detailedEmoji?.emoji }}</a>
+                    </div>
                     <div class="col flex flex-column justify-content-between">
                         <div class="grid flex-nowrap">
                             <div class="col-fixed" style="width: 120px;">Group</div>
@@ -45,7 +47,7 @@
                             <div class="col-fixed" style="width: 120px;">Name</div>
                             <div class="col font-normal">{{detailedEmoji?.nameEn}}</div>
                         </div>
-                        <div class="grid flex-nowrap">
+                        <div class="grid flex-nowrap code-point">
                             <div class="col-fixed" style="width: 120px;">Code Point</div>
                             <div class="col font-normal">
                                 <div class="grid flex-nowrap">
@@ -84,3 +86,11 @@
         </tr>
     </ng-template>
 </p-table>
+<p-toast position="bottom-right" [hideTransitionOptions]="'0ms'">
+    <ng-template let-message pTemplate="message">
+        <div class="p-toast-message-text" [attr.data-pc-section]="'text'">
+            <div class="p-toast-summary" [attr.data-pc-section]="'summary'">{{ message.summary }}</div>
+            <div class="p-toast-detail" [attr.data-pc-section]="'detail'">{{ message.detail }}</div>
+        </div>
+    </ng-template>
+</p-toast>

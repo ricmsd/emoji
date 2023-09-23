@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TreeNode } from 'primeng/api';
-import { TreeTable } from 'primeng/treetable';
 import { EmojiService } from 'src/service/emoji.service';
+import { MessageService } from 'primeng/api';
 
 interface Column {
   field: string;
@@ -12,7 +12,8 @@ interface Column {
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  providers: [MessageService]
 })
 export class AppComponent implements OnInit {
   public emojiTree!: TreeNode[];
@@ -23,7 +24,9 @@ export class AppComponent implements OnInit {
   public selectedStatus: string[] = ['component', 'fully-qualified', 'minimally-qualified', 'unqualified'];
   public detailedEmoji!: any;
 
-  constructor(private emojiService: EmojiService) {
+  constructor(
+    private emojiService: EmojiService,
+    private messageService: MessageService) {
   }
 
   ngOnInit(): void {
@@ -78,6 +81,8 @@ export class AppComponent implements OnInit {
 
   public writeText(text: string): void {
     navigator.clipboard.writeText(text);
+    this.messageService.clear();
+    this.messageService.add({ severity: 'success', summary: 'Copied!', detail: `"${text}" copied to clipboard.`, sticky: false }, );
   }
 
   public getSeverity(status: string) {
