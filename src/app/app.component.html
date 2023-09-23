@@ -1,7 +1,7 @@
 <p-table [value]="emojis" [tableStyle]="{ 'min-width': '50rem' }"
     [scrollable]="true" scrollHeight="flex"
     [virtualScroll]="true" [virtualScrollItemSize]="81"
-    selectionMode="single" dataKey="id" [(selection)]="selectedEmoji"
+    selectionMode="single" dataKey="id" [(selection)]="selectedEmoji" (onRowSelect)="onRowSelect()"
     styleClass="p-datatable-sm">
     <ng-template pTemplate="header">
         <tr>
@@ -24,7 +24,7 @@
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-emoji>
-        <tr [pSelectableRow]="emoji" (mouseenter)="selectedEmoji = emoji">
+        <tr [pSelectableRow]="emoji" (mouseenter)="onRowMouseEnter(emoji)">
             <td class="emoji">{{ emoji.emoji }}</td>
             <td>{{emoji.nameEn}}
             </td>
@@ -34,48 +34,48 @@
         <tr class="footer">
             <td colspan="2">
                 <div class="grid flex-nowrap" style="margin: 0;">
-                    <div class="col-fixed" style="width: 250px; font-size: 10em;">{{ selectedEmoji?.emoji }}</div>
+                    <div class="col-fixed" style="width: 250px; font-size: 10em;">{{ detailedEmoji?.emoji }}</div>
                     <div class="col flex flex-column justify-content-between">
                         <div class="grid flex-nowrap">
                             <div class="col-fixed" style="width: 120px;">Group</div>
-                            <div class="col font-normal">{{selectedEmoji?.parent.data.parent.data.nameEn}}
-                                <i class="pi pi-chevron-right ml-1 mr-1"></i>{{selectedEmoji?.parent.data.nameEn}}</div>
+                            <div class="col font-normal">{{detailedEmoji?.parent.data.parent.data.nameEn}}
+                                <i class="pi pi-chevron-right ml-1 mr-1"></i>{{detailedEmoji?.parent.data.nameEn}}</div>
                         </div>
                         <div class="grid flex-nowrap">
                             <div class="col-fixed" style="width: 120px;">Name</div>
-                            <div class="col font-normal">{{selectedEmoji?.nameEn}}</div>
+                            <div class="col font-normal">{{detailedEmoji?.nameEn}}</div>
                         </div>
                         <div class="grid flex-nowrap">
                             <div class="col-fixed" style="width: 120px;">Code Point</div>
                             <div class="col font-normal">
                                 <div class="grid flex-nowrap">
                                     <div class="col-fixed" style="width: 100px;">Unicode</div>
-                                    <div class="col"><a href="#" (click)="writeText(selectedEmoji?.codePointUnicode)">
-                                        <code>{{ selectedEmoji?.codePointUnicode }}</code><i class="pi pi-copy ml-1"></i></a></div>
+                                    <div class="col"><a href="#" (click)="writeText(detailedEmoji?.codePointUnicode)">
+                                        <code>{{ detailedEmoji?.codePointUnicode }}</code><i class="pi pi-copy ml-1"></i></a></div>
                                 </div>
                                 <div class="grid flex-nowrap">
                                     <div class="col-fixed" style="width: 100px;">CSS</div>
-                                    <div class="col"><a href="#" (click)="writeText(selectedEmoji?.codePointCSS)">
-                                        <code>{{ selectedEmoji?.codePointCSS }}</code><i class="pi pi-copy ml-1"></i></a></div>
+                                    <div class="col"><a href="#" (click)="writeText(detailedEmoji?.codePointCSS)">
+                                        <code>{{ detailedEmoji?.codePointCSS }}</code><i class="pi pi-copy ml-1"></i></a></div>
                                 </div>
                                 <div class="grid flex-nowrap">
                                     <div class="col-fixed" style="width: 100px;">JavaScript</div>
-                                    <div class="col"><a href="#" (click)="writeText(selectedEmoji?.codePointJS)">
-                                        <code>{{ selectedEmoji?.codePointJS }}</code><i class="pi pi-copy ml-1"></i></a></div>
+                                    <div class="col"><a href="#" (click)="writeText(detailedEmoji?.codePointJS)">
+                                        <code>{{ detailedEmoji?.codePointJS }}</code><i class="pi pi-copy ml-1"></i></a></div>
                                 </div>
                                 <div class="grid flex-nowrap">
                                     <div class="col-fixed" style="width: 100px;">HTML</div>
-                                    <div class="col"><a href="#" (click)="writeText(selectedEmoji?.codePointHTML)">
-                                        <code>{{ selectedEmoji?.codePointHTML }}</code><i class="pi pi-copy ml-1"></i></a></div>
+                                    <div class="col"><a href="#" (click)="writeText(detailedEmoji?.codePointHTML)">
+                                        <code>{{ detailedEmoji?.codePointHTML }}</code><i class="pi pi-copy ml-1"></i></a></div>
                                 </div>
                             </div>
                         </div>
                         <div class="grid flex-nowrap">
                             <div class="col-fixed" style="width: 120px;">Status</div>
                             <div class="col">
-                                <p-badge *ngIf="selectedEmoji?.emoji"
-                                    [value]="selectedEmoji?.status"
-                                    [severity]="getSeverity(selectedEmoji?.status)"></p-badge>
+                                <p-badge *ngIf="detailedEmoji?.emoji"
+                                    [value]="detailedEmoji?.status"
+                                    [severity]="getSeverity(detailedEmoji?.status)"></p-badge>
                             </div>
                         </div>
                     </div>

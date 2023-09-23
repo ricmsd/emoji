@@ -21,6 +21,7 @@ export class AppComponent implements OnInit {
   public emojis!: any[];
   public selectedEmoji!: any;
   public selectedStatus: string[] = ['component', 'fully-qualified', 'minimally-qualified', 'unqualified'];
+  public detailedEmoji!: any;
 
   constructor(private emojiService: EmojiService) {
   }
@@ -89,5 +90,15 @@ export class AppComponent implements OnInit {
         return 'warning';
     }
     return 'info';
+  }
+
+  public onRowSelect(): void {
+    this.detailedEmoji = this.selectedEmoji;
+  }
+  public onRowMouseEnter(emoji: any): void {
+    console.log('mouseenter');
+    if (!this.selectedEmoji) {
+      this.detailedEmoji = emoji;
+    }
   }
 }
