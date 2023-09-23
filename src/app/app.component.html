@@ -19,15 +19,14 @@
                 <p-columnFilter type="text" field="emoji" [showMenu]="false" matchMode="equals"></p-columnFilter>
             </th>
             <th>
-                <p-columnFilter type="text" field="nameEnForFilter" matchMode="contains"></p-columnFilter>
+                <p-columnFilter type="text" field="nameEn" matchMode="contains"></p-columnFilter>
             </th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-emoji>
         <tr [pSelectableRow]="emoji" (mouseenter)="selectedEmoji = emoji">
             <td class="emoji">{{ emoji.emoji }}</td>
-            <td>
-                <div *ngFor="let name of emoji.nameEn">{{name}}</div>
+            <td>{{emoji.nameEn}}
             </td>
         </tr>
     </ng-template>
@@ -37,9 +36,14 @@
                 <div class="grid flex-nowrap" style="margin: 0;">
                     <div class="col-fixed" style="width: 250px; font-size: 10em;">{{ selectedEmoji?.emoji }}</div>
                     <div class="col flex flex-column justify-content-between">
-                        <div class="grid flex-nowrap" style="height: 58px;">
+                        <div class="grid flex-nowrap">
+                            <div class="col-fixed" style="width: 120px;">Group</div>
+                            <div class="col font-normal">{{selectedEmoji?.parent.data.parent.data.nameEn}}
+                                <i class="pi pi-chevron-right ml-1 mr-1"></i>{{selectedEmoji?.parent.data.nameEn}}</div>
+                        </div>
+                        <div class="grid flex-nowrap">
                             <div class="col-fixed" style="width: 120px;">Name</div>
-                            <div class="col font-normal"><div *ngFor="let name of selectedEmoji?.nameEn">{{name}}</div></div>
+                            <div class="col font-normal">{{selectedEmoji?.nameEn}}</div>
                         </div>
                         <div class="grid flex-nowrap">
                             <div class="col-fixed" style="width: 120px;">Code Point</div>

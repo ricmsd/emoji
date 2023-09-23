@@ -15,17 +15,11 @@ interface Column {
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  public filterMode = 'lenient';
-  public unicode = '\u{1F600}';
-
   public emojiTree!: TreeNode[];
   public emojiTreeForFilter!: TreeNode[];
   public selectedNode!: TreeNode;
-
   public emojis!: any[];
   public selectedEmoji!: any;
-
-  public cols!: Column[];
   public selectedStatus: string[] = ['component', 'fully-qualified', 'minimally-qualified', 'unqualified'];
 
   constructor(private emojiService: EmojiService) {
@@ -64,12 +58,6 @@ export class AppComponent implements OnInit {
       this.selectedNode = treeForFilter[0];
       this.updateEmojis();
     });
-    this.cols = [
-        { field: 'nameEn', header: 'Name', filterMatchMode: 'lenient' },
-        { field: 'emoji', header: 'Emoji', filterMatchMode: 'lenient' },
-        // { field: 'sequence', header: 'Code Point', filterMatchMode: 'lenient' },
-        { field: 'status', header: 'Status', filterMatchMode: 'lenient' },
-    ];
   }
 
   public updateEmojis(): void {
@@ -85,12 +73,6 @@ export class AppComponent implements OnInit {
     };
     pushEmojis(this.selectedNode.data);
     this.emojis = emojis;
-  }
-
-  public filterByColumn(tt: TreeTable, event: Event, column: Column) {
-    const inputEvent: InputEvent = <InputEvent>event;
-    const field = (column.field === 'nameEn') ? 'nameEnForFilter' : column.field;
-    tt.filter((<HTMLInputElement>inputEvent.target).value, column.field, "contains");
   }
 
   public writeText(text: string): void {

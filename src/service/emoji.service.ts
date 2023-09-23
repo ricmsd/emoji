@@ -13,11 +13,13 @@ export class EmojiService {
         return new Promise((resolve, reject) => {
             this.httpClient.get('./assets/emoji.json').subscribe((res) => {
                 const emojis: TreeNode[] = <TreeNode[]>res;
-                const customize = (node: TreeNode) => {
-                    if (['group', 'subgroup'].includes(node.data['type'])) {
+                const customize = (node: TreeNode, parent: TreeNode|null) => {
+                    if (node.data['type'] === 'group') {
                         node.expanded = true;
+                    } else if (node.data['type'] === 'subgroup') {
+                        node.expanded = true;
+                        node.data['parent'] = parent;
                     } else {
-                        node.data['nameEnForFilter'] = (<string[]>node.data['nameEn']).join('\n');
                         node.data['emoji'] =
                             String.fromCodePoint(...(<string[]>node.data['sequence']).map(i => parseInt(i, 16)))
                         node.data['codePointUnicode'] =
@@ -28,13 +30,14 @@ export class EmojiService {
                             (<string[]>node.data['sequence']).map(i => '\\u' + i).join('');
                         node.data['codePointHTML'] =
                             (<string[]>node.data['sequence']).map(i => '&#x' + i + ';').join('');
+                        node.data['parent'] = parent;
                     }
                     for (let next of node.children || []) {
-                        customize(next);
+                        customize(next, node);
                     }
                 };
                 for (let emoji of emojis) {
-                    customize(emoji);
+                    customize(emoji, null);
                 }
                 resolve(emojis);
             })
