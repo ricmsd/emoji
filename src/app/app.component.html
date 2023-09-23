@@ -1,0 +1,82 @@
+<p-table [value]="emojis" [tableStyle]="{ 'min-width': '50rem' }"
+    [scrollable]="true" scrollHeight="flex"
+    [virtualScroll]="true" [virtualScrollItemSize]="81"
+    selectionMode="single" dataKey="id" [(selection)]="selectedEmoji"
+    styleClass="p-datatable-sm">
+    <ng-template pTemplate="header">
+        <tr>
+            <th colspan="2">
+                <p-treeSelect [(ngModel)]="selectedNode" [options]="emojiTreeForFilter" placeholder="Select Item"
+                    appendTo="body" (onNodeSelect)="updateEmojis()"></p-treeSelect>
+            </th>
+        </tr>
+        <tr>
+            <th>Emoji</th>
+            <th>Name</th>
+        </tr>
+        <tr>
+            <th>
+                <p-columnFilter type="text" field="emoji" [showMenu]="false" matchMode="equals"></p-columnFilter>
+            </th>
+            <th>
+                <p-columnFilter type="text" field="nameEnForFilter" matchMode="contains"></p-columnFilter>
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-emoji>
+        <tr [pSelectableRow]="emoji" (mouseenter)="selectedEmoji = emoji">
+            <td class="emoji">{{ emoji.emoji }}</td>
+            <td>
+                <div *ngFor="let name of emoji.nameEn">{{name}}</div>
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <tr class="footer">
+            <td colspan="2">
+                <div class="grid flex-nowrap" style="margin: 0;">
+                    <div class="col-fixed" style="width: 250px; font-size: 10em;">{{ selectedEmoji?.emoji }}</div>
+                    <div class="col flex flex-column justify-content-between">
+                        <div class="grid flex-nowrap" style="height: 58px;">
+                            <div class="col-fixed" style="width: 120px;">Name</div>
+                            <div class="col font-normal"><div *ngFor="let name of selectedEmoji?.nameEn">{{name}}</div></div>
+                        </div>
+                        <div class="grid flex-nowrap">
+                            <div class="col-fixed" style="width: 120px;">Code Point</div>
+                            <div class="col font-normal">
+                                <div class="grid flex-nowrap">
+                                    <div class="col-fixed" style="width: 100px;">Unicode</div>
+                                    <div class="col"><a href="#" (click)="writeText(selectedEmoji?.codePointUnicode)">
+                                        <code>{{ selectedEmoji?.codePointUnicode }}</code><i class="pi pi-copy ml-1"></i></a></div>
+                                </div>
+                                <div class="grid flex-nowrap">
+                                    <div class="col-fixed" style="width: 100px;">CSS</div>
+                                    <div class="col"><a href="#" (click)="writeText(selectedEmoji?.codePointCSS)">
+                                        <code>{{ selectedEmoji?.codePointCSS }}</code><i class="pi pi-copy ml-1"></i></a></div>
+                                </div>
+                                <div class="grid flex-nowrap">
+                                    <div class="col-fixed" style="width: 100px;">JavaScript</div>
+                                    <div class="col"><a href="#" (click)="writeText(selectedEmoji?.codePointJS)">
+                                        <code>{{ selectedEmoji?.codePointJS }}</code><i class="pi pi-copy ml-1"></i></a></div>
+                                </div>
+                                <div class="grid flex-nowrap">
+                                    <div class="col-fixed" style="width: 100px;">HTML</div>
+                                    <div class="col"><a href="#" (click)="writeText(selectedEmoji?.codePointHTML)">
+                                        <code>{{ selectedEmoji?.codePointHTML }}</code><i class="pi pi-copy ml-1"></i></a></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid flex-nowrap">
+                            <div class="col-fixed" style="width: 120px;">Status</div>
+                            <div class="col">
+                                <p-badge *ngIf="selectedEmoji?.emoji"
+                                    [value]="selectedEmoji?.status"
+                                    [severity]="getSeverity(selectedEmoji?.status)"></p-badge>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
