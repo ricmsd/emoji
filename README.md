@@ -1,5 +1,5 @@
 # Emoji
-This is an emoji search website. See [GitHub Pages](https://ricmsd.github.io/emoji/).
+This is yet another emoji search website. See [GitHub Pages](https://ricmsd.github.io/emoji/).
 
 ## Screenshot
 ![emoji](https://raw.githubusercontent.com/ricmsd/emoji/main/docs/screenshot.png)
