@@ -38,10 +38,10 @@
                         <a href="#" (click)="writeText(detailedEmoji?.emoji)">{{ detailedEmoji?.emoji }}</a>
                     </div>
                     <div class="col flex flex-column justify-content-between">
-                        <div class="grid flex-nowrap">
+                        <div class="grid flex-nowrap group">
                             <div class="col-fixed" style="width: 120px;">Group</div>
-                            <div class="col font-normal">{{detailedEmoji?.parent.data.parent.data.nameEn}}
-                                <i class="pi pi-chevron-right ml-1 mr-1"></i>{{detailedEmoji?.parent.data.nameEn}}</div>
+                            <div class="col font-normal"><a href="#" (click)="selectedNode = detailedEmoji?.parent.data.parent.data.treeNode; updateEmojis()">{{detailedEmoji?.parent.data.parent.data.nameEn}}</a>
+                                <i class="pi pi-chevron-right ml-1 mr-1"></i><a href="#" (click)="selectedNode = detailedEmoji?.parent.data.treeNode; updateEmojis()">{{detailedEmoji?.parent.data.nameEn}}</a></div>
                         </div>
                         <div class="grid flex-nowrap">
                             <div class="col-fixed" style="width: 120px;">Name</div>

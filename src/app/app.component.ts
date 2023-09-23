@@ -47,6 +47,7 @@ export class AppComponent implements OnInit {
           children: [],
           key: i.data['id']
         };
+        i.data['treeNode'] = group;
         allcategory.children?.push(group);
         allcategory.data.children.push(i);
         i.children?.forEach(j => {
@@ -55,6 +56,7 @@ export class AppComponent implements OnInit {
             data: j,
             key: j.data['id']
           };
+          j.data['treeNode'] = subgroup;
           group.children?.push(subgroup);
         });
       });
