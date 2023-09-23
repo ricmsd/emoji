@@ -4,8 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development"
+    "deploy": "ng deploy --base-href=/emoji/"
   },
   "private": true,
   "dependencies": {
