@@ -24,6 +24,13 @@ export class AppComponent implements OnInit {
   public selectedStatus: string[] = ['component', 'fully-qualified', 'minimally-qualified', 'unqualified'];
   public detailedEmoji!: any;
 
+  public displayModeValue: 'list' | 'grid' = 'list';
+  public displayModeOptions: any[] = [
+      { icon: 'pi pi-list', value: 'list' },
+      { icon: 'pi pi-th-large', value: 'grid' },
+  ];  
+  public iconSizeValue: number = 30;
+
   constructor(
     private emojiService: EmojiService,
     private messageService: MessageService) {
@@ -103,6 +110,19 @@ export class AppComponent implements OnInit {
     this.detailedEmoji = this.selectedEmoji;
   }
   public onRowMouseEnter(emoji: any): void {
+    if (!this.selectedEmoji) {
+      this.detailedEmoji = emoji;
+    }
+  }
+  public onGridItemSelect(emoji: any): void {
+    if (this.selectedEmoji === emoji) {
+      this.selectedEmoji = null;
+    } else {
+      this.selectedEmoji = emoji;
+      this.detailedEmoji = this.selectedEmoji;
+    }
+  }
+  public onGridItemMouseEnter(emoji: any): void {
     if (!this.selectedEmoji) {
       this.detailedEmoji = emoji;
     }
