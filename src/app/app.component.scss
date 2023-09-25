@@ -116,9 +116,19 @@ td.emoji {
             }
         }
         .code-point {
-            a, a:visited {
-                color: white;
+            .code-point-detail {
+                a, a:visited {
+                    color: white;
+                }
             }
         }
     }
+}
+@media (width <= 700px) {
+    :host > .footer {
+        .emoji {
+            width: 155px;
+            font-size: 7.5em;
+        }
+    }    
 }
