@@ -63,3 +63,40 @@ tr.footer {
         color: #343a40;
     }
 }
+@media (prefers-color-scheme: dark) {
+    :host > .header {
+        background-color: #071426;
+    }
+    :host > .body {
+        border: 1px solid #0b213f;
+
+        &.grid-mode {
+            background-color: #071426;
+            div.grid-item:not(.selected):hover {
+                background-color: rgba(255, 255, 255, 0.03);
+                border: #0b213f solid 1px;
+            }
+            div.grid-item.selected {
+                background-color: rgba(147, 197, 253, 0.16);
+                border: #0b213f solid 1px;
+            }
+        }
+    }
+    :host > .footer {
+        background-color: #071426;
+        border: 1px solid #0b213f;
+    }
+    tr.footer {
+        .emoji {
+            a, a:active {
+                color: white;
+            }
+        }
+        .group a:visited {
+            color: white;
+        }
+        .code-point a:visited {
+            color: white;
+        }
+    }
+}
