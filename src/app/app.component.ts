@@ -28,8 +28,12 @@ export class AppComponent implements OnInit {
   public displayModeOptions: any[] = [
       { icon: 'pi pi-list', value: 'list' },
       { icon: 'pi pi-th-large', value: 'grid' },
-  ];  
+  ];
   public iconSizeValue: number = 65;
+
+  public readonly GRID_SLIDER_MIN = 30;
+  public readonly GRID_SLIDER_MAX = 100;
+  public readonly GRID_SLIDER_STEP = 5;
 
   constructor(
     private emojiService: EmojiService,
@@ -125,6 +129,23 @@ export class AppComponent implements OnInit {
   public onGridItemMouseEnter(emoji: any): void {
     if (!this.selectedEmoji) {
       this.detailedEmoji = emoji;
+    }
+  }
+
+  public onMouseWheelInGrid(event: any): void {
+    const wheelEvent = <WheelEvent>event;
+    if (!wheelEvent.ctrlKey) {
+      return;
+    }
+    wheelEvent.preventDefault();
+    if (wheelEvent.deltaY < 0) {
+      if (this.iconSizeValue < this.GRID_SLIDER_MAX) {
+        this.iconSizeValue += this.GRID_SLIDER_STEP;
+      }
+    } else if (wheelEvent.deltaY > 0) {
+      if (this.iconSizeValue > this.GRID_SLIDER_MIN) {
+        this.iconSizeValue -= this.GRID_SLIDER_STEP;
+      }
     }
   }
 }

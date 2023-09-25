@@ -9,7 +9,7 @@
     </p-selectButton>
 
     <p-slider [(ngModel)]="iconSizeValue" [disabled]="displayModeValue != 'grid'"
-        [min]="30" [max]="100" [step]="5" class="w-10rem ml-3"></p-slider>
+        [min]="GRID_SLIDER_MIN" [max]="GRID_SLIDER_MAX" [step]="GRID_SLIDER_STEP" class="w-10rem ml-3"></p-slider>
 </div>
 <div class="body" *ngIf="displayModeValue == 'list'">
     <p-table [value]="emojis" [tableStyle]="{ 'min-width': '50rem' }"
@@ -41,7 +41,7 @@
     </p-table>
 </div>
 <div class="body overflow-y-scroll grid-mode" *ngIf="displayModeValue == 'grid'">
-    <div class="flex flex-wrap">
+    <div class="flex flex-wrap" (mousewheel)="onMouseWheelInGrid($event)">
         <ng-container *ngFor="let emoji of emojis">
             <div class="grid-item border-round flex justify-content-center align-items-center overflow-hidden"
                 [style.width]="(230 * (iconSizeValue/100)) + 'px'"
