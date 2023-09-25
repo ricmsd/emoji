@@ -53,64 +53,58 @@
         </ng-container>
     </div>
 </div>
-<div class="footer">
-    <tr class="footer">
-        <td class="border-none" colspan="2">
-            <div class="grid flex-nowrap" style="margin: 0;">
-                <div class="col-fixed emoji" style="width: 250px; font-size: 10em;">
-                    <a href="#" (click)="writeText(detailedEmoji?.emoji)">{{ detailedEmoji?.emoji }}</a>
+<div class="footer grid flex-nowrap" style="margin: 0;">
+    <div class="col-fixed emoji flex overflow-hidden justify-content-center align-items-center" style="width: 250px; font-size: 10em;">
+        <a href="#" (click)="writeText(detailedEmoji?.emoji)">{{ detailedEmoji?.emoji }}</a>
+    </div>
+    <div class="col flex flex-column justify-content-between">
+        <div class="grid flex-nowrap group">
+            <div class="col-fixed" style="width: 120px;">Group</div>
+            <div *ngIf="!!detailedEmoji" class="col font-normal">
+                <a href="#" (click)="selectedNode = emojiTreeForFilter[0] ; updateEmojis()">All Group</a>
+                <i class="pi pi-chevron-right ml-1 mr-1"></i>
+                <a href="#" (click)="selectedNode = detailedEmoji?.parent.data.parent.data.treeNode; updateEmojis()">{{detailedEmoji?.parent.data.parent.data.nameEn}}</a>
+                <i class="pi pi-chevron-right ml-1 mr-1"></i>
+                <a href="#" (click)="selectedNode = detailedEmoji?.parent.data.treeNode; updateEmojis()">{{detailedEmoji?.parent.data.nameEn}}</a></div>
+        </div>
+        <div class="grid flex-nowrap">
+            <div class="col-fixed" style="width: 120px;">Name</div>
+            <div class="col font-normal">{{detailedEmoji?.nameEn}}</div>
+        </div>
+        <div class="grid flex-nowrap code-point">
+            <div class="col-fixed" style="width: 120px;">Code Point</div>
+            <div class="col font-normal">
+                <div class="grid flex-nowrap">
+                    <div class="col-fixed" style="width: 100px;">Unicode</div>
+                    <div *ngIf="!!detailedEmoji" class="col"><a href="#" (click)="writeText(detailedEmoji?.codePointUnicode)">
+                        <code>{{ detailedEmoji?.codePointUnicode }}</code><i class="pi pi-copy ml-1 opacity-30"></i></a></div>
                 </div>
-                <div class="col flex flex-column justify-content-between">
-                    <div class="grid flex-nowrap group">
-                        <div class="col-fixed" style="width: 120px;">Group</div>
-                        <div *ngIf="!!detailedEmoji" class="col font-normal">
-                            <a href="#" (click)="selectedNode = emojiTreeForFilter[0] ; updateEmojis()">All Group</a>
-                            <i class="pi pi-chevron-right ml-1 mr-1"></i>
-                            <a href="#" (click)="selectedNode = detailedEmoji?.parent.data.parent.data.treeNode; updateEmojis()">{{detailedEmoji?.parent.data.parent.data.nameEn}}</a>
-                            <i class="pi pi-chevron-right ml-1 mr-1"></i>
-                            <a href="#" (click)="selectedNode = detailedEmoji?.parent.data.treeNode; updateEmojis()">{{detailedEmoji?.parent.data.nameEn}}</a></div>
-                    </div>
-                    <div class="grid flex-nowrap">
-                        <div class="col-fixed" style="width: 120px;">Name</div>
-                        <div class="col font-normal">{{detailedEmoji?.nameEn}}</div>
-                    </div>
-                    <div class="grid flex-nowrap code-point">
-                        <div class="col-fixed" style="width: 120px;">Code Point</div>
-                        <div class="col font-normal">
-                            <div class="grid flex-nowrap">
-                                <div class="col-fixed" style="width: 100px;">Unicode</div>
-                                <div *ngIf="!!detailedEmoji" class="col"><a href="#" (click)="writeText(detailedEmoji?.codePointUnicode)">
-                                    <code>{{ detailedEmoji?.codePointUnicode }}</code><i class="pi pi-copy ml-1 opacity-30"></i></a></div>
-                            </div>
-                            <div class="grid flex-nowrap">
-                                <div class="col-fixed" style="width: 100px;">CSS</div>
-                                <div *ngIf="!!detailedEmoji" class="col"><a href="#" (click)="writeText(detailedEmoji?.codePointCSS)">
-                                    <code>{{ detailedEmoji?.codePointCSS }}</code><i class="pi pi-copy ml-1 opacity-30"></i></a></div>
-                            </div>
-                            <div class="grid flex-nowrap">
-                                <div class="col-fixed" style="width: 100px;">JavaScript</div>
-                                <div *ngIf="!!detailedEmoji" class="col"><a href="#" (click)="writeText(detailedEmoji?.codePointJS)">
-                                    <code>{{ detailedEmoji?.codePointJS }}</code><i class="pi pi-copy ml-1 opacity-30"></i></a></div>
-                            </div>
-                            <div class="grid flex-nowrap">
-                                <div class="col-fixed" style="width: 100px;">HTML</div>
-                                <div *ngIf="!!detailedEmoji" class="col"><a href="#" (click)="writeText(detailedEmoji?.codePointHTML)">
-                                    <code>{{ detailedEmoji?.codePointHTML }}</code><i class="pi pi-copy ml-1 opacity-30"></i></a></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="grid flex-nowrap">
-                        <div class="col-fixed" style="width: 120px;">Status</div>
-                        <div class="col">
-                            <p-badge *ngIf="detailedEmoji?.emoji"
-                                [value]="detailedEmoji?.status"
-                                [severity]="getSeverity(detailedEmoji?.status)"></p-badge>
-                        </div>
-                    </div>
+                <div class="grid flex-nowrap">
+                    <div class="col-fixed" style="width: 100px;">CSS</div>
+                    <div *ngIf="!!detailedEmoji" class="col"><a href="#" (click)="writeText(detailedEmoji?.codePointCSS)">
+                        <code>{{ detailedEmoji?.codePointCSS }}</code><i class="pi pi-copy ml-1 opacity-30"></i></a></div>
+                </div>
+                <div class="grid flex-nowrap">
+                    <div class="col-fixed" style="width: 100px;">JavaScript</div>
+                    <div *ngIf="!!detailedEmoji" class="col"><a href="#" (click)="writeText(detailedEmoji?.codePointJS)">
+                        <code>{{ detailedEmoji?.codePointJS }}</code><i class="pi pi-copy ml-1 opacity-30"></i></a></div>
+                </div>
+                <div class="grid flex-nowrap">
+                    <div class="col-fixed" style="width: 100px;">HTML</div>
+                    <div *ngIf="!!detailedEmoji" class="col"><a href="#" (click)="writeText(detailedEmoji?.codePointHTML)">
+                        <code>{{ detailedEmoji?.codePointHTML }}</code><i class="pi pi-copy ml-1 opacity-30"></i></a></div>
                 </div>
             </div>
-        </td>
-    </tr>
+        </div>
+        <div class="grid flex-nowrap">
+            <div class="col-fixed" style="width: 120px;">Status</div>
+            <div class="col">
+                <p-badge *ngIf="detailedEmoji?.emoji"
+                    [value]="detailedEmoji?.status"
+                    [severity]="getSeverity(detailedEmoji?.status)"></p-badge>
+            </div>
+        </div>
+    </div>
 </div>
 
 <p-toast position="bottom-right" [hideTransitionOptions]="'0ms'">

@@ -38,15 +38,7 @@
     background-color: #f8f9fa;
     border: 1px solid #dee2e6;
     border-width: 1px 0 0 0;
-}
-td.name > div {
-    display: flex;
-}
-td.emoji {
-    font-size: 3em;
-    width: 175px;
-}
-tr.footer {
+
     code {
         font-size: 0.9em;
     }
@@ -66,6 +58,13 @@ tr.footer {
             color: #343a40;
         }
     }
+}
+td.name > div {
+    display: flex;
+}
+td.emoji {
+    font-size: 3em;
+    width: 175px;
 }
 @media (prefers-color-scheme: dark) {
     :host > .header {
@@ -89,8 +88,7 @@ tr.footer {
     :host > .footer {
         background-color: #071426;
         border: 1px solid #0b213f;
-    }
-    tr.footer {
+
         .emoji {
             a, a:active {
                 color: white;
