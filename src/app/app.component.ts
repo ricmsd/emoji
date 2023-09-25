@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
       { icon: 'pi pi-list', value: 'list' },
       { icon: 'pi pi-th-large', value: 'grid' },
   ];  
-  public iconSizeValue: number = 30;
+  public iconSizeValue: number = 65;
 
   constructor(
     private emojiService: EmojiService,
@@ -39,14 +39,14 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.emojiService.getEmoji().then((emojisTree) => {
       this.emojiTree = emojisTree;
-      const allcategory: TreeNode = {
-        label: 'All Category',
-        data: { children: [], data: { type: 'allcategory' } },
+      const allgroup: TreeNode = {
+        label: 'All Group',
+        data: { children: [], data: { type: 'allgroup' } },
         children: [],
-        key: 'allcategory',
+        key: 'allgroup',
         expanded: true
       };
-      const treeForFilter: TreeNode[] = [allcategory];
+      const treeForFilter: TreeNode[] = [allgroup];
       emojisTree.forEach(i => {
         const group: TreeNode = {
           label: i.data['nameEn'],
@@ -55,8 +55,8 @@ export class AppComponent implements OnInit {
           key: i.data['id']
         };
         i.data['treeNode'] = group;
-        allcategory.children?.push(group);
-        allcategory.data.children.push(i);
+        allgroup.children?.push(group);
+        allgroup.data.children.push(i);
         i.children?.forEach(j => {
           const subgroup: TreeNode = {
             label: j.data['nameEn'],

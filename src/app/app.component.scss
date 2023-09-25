@@ -10,7 +10,7 @@
     background-color: #f8f9fa;
 }
 :host > .body {
-    height: calc(100% - 47px - 1em - 246px);
+    height: calc(100% - 47px - 1em - 244px);
     border: 1px solid #dee2e6;
     border-width: 1px 0 0 0;
     width: 100%;
@@ -33,9 +33,11 @@
 :host > .footer {
     position: absolute;
     bottom: 0;
-    height: 246px;
+    height: 245px;
     width: 100%;
     background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-width: 1px 0 0 0;
 }
 td.name > div {
     display: flex;
