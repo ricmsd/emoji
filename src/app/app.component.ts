@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TreeNode } from 'primeng/api';
+import { MenuItem, TreeNode } from 'primeng/api';
 import { EmojiService } from 'src/service/emoji.service';
 import { MessageService } from 'primeng/api';
 
@@ -44,6 +44,9 @@ export class AppComponent implements OnInit {
   public readonly GRID_SLIDER_STEP = 5;
 
   public enableTwEmoji: boolean = false;
+  public menuItems: MenuItem[] = [
+    { label: 'Licenses', icon: 'pi pi-external-link', url: '/assets/licenses.html' }
+  ];
 
   constructor(
     private emojiService: EmojiService,

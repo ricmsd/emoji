@@ -17,6 +17,9 @@
     </div>
 
     <!-- p-checkbox [(ngModel)]="enableTwEmoji" [binary]="true" inputId="checkboxTwEmoji" label="Twemoji" class="ml-5"></p-checkbox -->
+
+    <p-button class="ml-auto" icon="pi pi-ellipsis-h" styleClass="p-button-rounded p-button-secondary p-button-text"
+        (onClick)="menu.toggle($event)"></p-button>
 </div>
 <div class="body" *ngIf="displayModeValue == 'list'">
     <p-table [value]="emojis"
@@ -142,3 +145,5 @@
         </div>
     </ng-template>
 </p-toast>
+
+<p-menu #menu [model]="menuItems" [popup]="true"></p-menu>

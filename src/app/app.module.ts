@@ -11,6 +11,7 @@ import { ToastModule } from 'primeng/toast';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { SliderModule } from 'primeng/slider';
 import { CheckboxModule } from 'primeng/checkbox';
+import { MenuModule } from 'primeng/menu';
 
 import { AppComponent } from './app.component';
 import { EmojiService } from 'src/service/emoji.service';
@@ -32,7 +33,8 @@ import { EmojiService } from 'src/service/emoji.service';
     ToastModule,
     SelectButtonModule,
     SliderModule,
-    CheckboxModule
+    CheckboxModule,
+    MenuModule
   ],
   providers: [EmojiService],
   bootstrap: [AppComponent]
