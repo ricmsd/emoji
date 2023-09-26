@@ -1,15 +1,23 @@
 <div class="header flex align-items-center">
     <p-treeSelect [(ngModel)]="selectedNode" [options]="emojiTreeForFilter" placeholder="Select Item"
-        appendTo="body" (onNodeSelect)="updateEmojis()"></p-treeSelect>
+        appendTo="body" (onNodeSelect)="updateEmojis()" containerStyleClass="groupSelect"></p-treeSelect>
 
-    <p-selectButton [options]="displayModeOptions" [(ngModel)]="displayModeValue" optionLabel="icon" optionValue="value" styleClass="ml-5">
-        <ng-template let-item pTemplate>
-            <i [class]="item.icon"></i>
-        </ng-template>
-    </p-selectButton>
+    <div class="selectButton ml-5">
+        <p-selectButton [options]="displayModeOptions" [(ngModel)]="displayModeValue" optionLabel="icon" optionValue="value">
+            <ng-template let-item pTemplate>
+                <i [class]="item.icon"></i>
+            </ng-template>
+        </p-selectButton>
+    </div>
+    <div class="button ml-5">
+        <p-button *ngIf="displayModeOptions[0].value == displayModeValue" icon="pi pi-list"
+            (onClick)="displayModeValue = displayModeOptions[1].value"></p-button>
+        <p-button *ngIf="displayModeOptions[1].value == displayModeValue" icon="pi pi-th-large"
+            (onClick)="displayModeValue = displayModeOptions[0].value"></p-button>
+    </div>
 
     <p-slider [(ngModel)]="iconSizeValue" [disabled]="displayModeValue != 'grid'"
-        [min]="GRID_SLIDER_MIN" [max]="GRID_SLIDER_MAX" [step]="GRID_SLIDER_STEP" class="w-10rem ml-3"></p-slider>
+        [min]="GRID_SLIDER_MIN" [max]="GRID_SLIDER_MAX" [step]="GRID_SLIDER_STEP" class="gridSlider ml-3"></p-slider>
 </div>
 <div class="body" *ngIf="displayModeValue == 'list'">
     <p-table [value]="emojis"
@@ -59,7 +67,7 @@
     </div>
     <div class="detail col flex flex-column justify-content-between">
         <div class="group grid flex-nowrap">
-            <div class="col-fixed" style="width: 120px;">Group</div>
+            <div class="detail-label col-fixed">Group</div>
             <div *ngIf="!!detailedEmoji" class="detail-value col font-normal">
                 <a href="#" (click)="selectedNode = emojiTreeForFilter[0] ; updateEmojis()">All Group</a>
                 <i class="pi pi-chevron-right ml-1 mr-1"></i>
@@ -68,11 +76,11 @@
                 <a href="#" (click)="selectedNode = detailedEmoji?.parent.data.treeNode; updateEmojis()">{{detailedEmoji?.parent.data.nameEn}}</a></div>
         </div>
         <div class="grid flex-nowrap">
-            <div class="col-fixed" style="width: 120px;">Name</div>
+            <div class="detail-label col-fixed">Name</div>
             <div class="detail-value col font-normal">{{detailedEmoji?.nameEn}}</div>
         </div>
         <div class="code-point grid flex-nowrap">
-            <div class="col-fixed" style="width: 120px;">Code Point</div>
+            <div class="detail-label col-fixed">Code Point</div>
             <div class="code-point-detail col font-normal">
                 <div class="grid flex-nowrap">
                     <div class="col-fixed" style="width: 100px;">Unicode</div>
@@ -97,7 +105,7 @@
             </div>
         </div>
         <div class="grid flex-nowrap">
-            <div class="col-fixed" style="width: 120px;">Status</div>
+            <div class="detail-label col-fixed">Status</div>
             <div class="col">
                 <p-badge *ngIf="detailedEmoji?.emoji"
                     [value]="detailedEmoji?.status"
