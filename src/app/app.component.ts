@@ -9,6 +9,14 @@ interface Column {
   filterMatchMode: string;
 }
 
+declare var twemoji: {
+  convert: {
+    fromCodePoint(str: string): string;
+    toCodePoint(str: string): string;
+  },
+  parse(str: string, options?: { folder: string, ext: string }): string;
+};
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -34,6 +42,8 @@ export class AppComponent implements OnInit {
   public readonly GRID_SLIDER_MIN = 30;
   public readonly GRID_SLIDER_MAX = 100;
   public readonly GRID_SLIDER_STEP = 5;
+
+  public enableTwEmoji: boolean = false;
 
   constructor(
     private emojiService: EmojiService,
@@ -147,5 +157,9 @@ export class AppComponent implements OnInit {
         this.iconSizeValue -= this.GRID_SLIDER_STEP;
       }
     }
+  }
+
+  public toTwEmojiURL(codePoint: string): string {
+    return 'https://twemoji.maxcdn.com/svg/' + twemoji.convert.toCodePoint(codePoint) + '.svg';
   }
 }

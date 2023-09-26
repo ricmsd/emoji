@@ -18,22 +18,44 @@
     > .button {
         display: none;
     }
-    > .gridSlider {
-        width: 10rem;
-    }
 }
 :host > .body {
     height: calc(100% - 47px - 1em - 244px);
+    width: 100%;
     border: 1px solid #dee2e6;
     border-width: 1px 0 0 0;
-    width: 100%;
 
     td.emoji {
         font-size: 3em;
         width: 175px;
+
+        .twemoji-wrapper {
+            width: 64px;
+            height: 64px;
+
+            img.twemoji {
+                width: 3rem;
+                height: 3rem;
+                display: block
+            }
+        }
     }
 
     &.grid-mode {
+        .grid-header {
+            width: 100%;
+            height: 38px;
+            border: 1px solid #dee2e6;
+            border-width: 0 0 1px 0;
+            background-color: #f8f9fa;
+                
+            > .gridSlider {
+                width: 15rem;
+            }
+        }
+        .grid-body {
+            height: calc(100% - 38px);
+        }
         div.grid-item {
             border-width: 1px;
             border: transparent solid 1px;
@@ -57,16 +79,24 @@
     border: 1px solid #dee2e6;
     border-width: 1px 0 0 0;
 
-    code {
-        font-size: 0.9em;
-    }
     .emoji {
-        width: 250px;
         font-size: 10em;
+        width: 250px;
 
         a, a:active {
             color: black;
             text-decoration: none;
+        }
+
+        .twemoji-wrapper {
+            width: 250px;
+            height: 250px;
+
+            img.twemoji {
+                width: 10rem;
+                height: 10rem;
+                display: block
+            }
         }
     }
     .detail {
@@ -79,6 +109,10 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+
+            code {
+                font-size: 0.9em;
+            }
         }
     }
     .group {
@@ -109,6 +143,12 @@
 
         &.grid-mode {
             background-color: #071426;
+
+            .grid-header {
+                border: 1px solid #0b213f;
+                border-width: 0 0 1px 0;
+                background-color: #071426;
+            }
             div.grid-item:not(.selected):hover {
                 background-color: rgba(255, 255, 255, 0.03);
                 border: #0b213f solid 1px;
@@ -154,14 +194,22 @@
         > .button {
             display: block;
         }
-        > .gridSlider {
-            width: 7.5rem;
-        }
     }
     :host > .footer {
         .emoji {
             width: 155px;
             font-size: 7.5em;
+ 
+            .twemoji-wrapper {
+                width: 155px;
+                height: 155px;
+    
+                img.twemoji {
+                    width: 7.5rem;
+                    height: 7.5rem;
+                    display: block
+                }
+            }
         }
         .detail {
             width: calc(100% - 155px);

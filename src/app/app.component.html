@@ -16,8 +16,7 @@
             (onClick)="displayModeValue = displayModeOptions[0].value"></p-button>
     </div>
 
-    <p-slider [(ngModel)]="iconSizeValue" [disabled]="displayModeValue != 'grid'"
-        [min]="GRID_SLIDER_MIN" [max]="GRID_SLIDER_MAX" [step]="GRID_SLIDER_STEP" class="gridSlider ml-3"></p-slider>
+    <!-- p-checkbox [(ngModel)]="enableTwEmoji" [binary]="true" inputId="checkboxTwEmoji" label="Twemoji" class="ml-5"></p-checkbox -->
 </div>
 <div class="body" *ngIf="displayModeValue == 'list'">
     <p-table [value]="emojis"
@@ -41,15 +40,28 @@
         </ng-template>
         <ng-template pTemplate="body" let-emoji>
             <tr [pSelectableRow]="emoji" (mouseenter)="onRowMouseEnter(emoji)">
-                <td class="emoji">{{ emoji.emoji }}</td>
+                <td class="emoji">
+                    <ng-container *ngIf="!enableTwEmoji; else twEmojiTemplate">
+                        {{ emoji.emoji }}
+                    </ng-container>
+                    <ng-template #twEmojiTemplate>
+                        <div class="flex align-items-center justify-content-center twemoji-wrapper">
+                            <img [src]="toTwEmojiURL(emoji.emoji)" class="twemoji" loading="lazy">
+                        </div>
+                    </ng-template>
+                </td>
                 <td>{{emoji.nameEn}}
                 </td>
             </tr>
         </ng-template>
     </p-table>
 </div>
-<div class="body overflow-y-scroll grid-mode" *ngIf="displayModeValue == 'grid'">
-    <div class="flex flex-wrap" (mousewheel)="onMouseWheelInGrid($event)">
+<div class="body overflow-hidden grid-mode" *ngIf="displayModeValue == 'grid'">
+    <div class="flex justify-content-center align-items-center grid-header">
+        <p-slider [(ngModel)]="iconSizeValue" [min]="GRID_SLIDER_MIN" [max]="GRID_SLIDER_MAX" [step]="GRID_SLIDER_STEP"
+            class="gridSlider"></p-slider>
+    </div>
+    <div class="overflow-y-scroll flex flex-wrap grid-body" (mousewheel)="onMouseWheelInGrid($event)">
         <ng-container *ngFor="let emoji of emojis">
             <div class="grid-item border-round flex justify-content-center align-items-center overflow-hidden"
                 [style.width]="(230 * (iconSizeValue/100)) + 'px'"
@@ -63,7 +75,14 @@
 </div>
 <div class="footer grid flex-nowrap" style="margin: 0;">
     <div class="emoji col-fixed flex overflow-hidden justify-content-center align-items-center">
-        <a href="#" (click)="writeText(detailedEmoji?.emoji)">{{ detailedEmoji?.emoji }}</a>
+        <ng-container *ngIf="!enableTwEmoji; else twEmojiTemplateDetail">
+            <a href="#" (click)="writeText(detailedEmoji?.emoji)">{{ detailedEmoji?.emoji }}</a>
+        </ng-container>
+        <ng-template #twEmojiTemplateDetail>
+            <div class="flex align-items-center justify-content-center twemoji-wrapper">
+                <img [src]="toTwEmojiURL(detailedEmoji?.emoji)" class="twemoji" loading="lazy">
+            </div>
+        </ng-template>
     </div>
     <div class="detail col flex flex-column justify-content-between">
         <div class="group grid flex-nowrap">
