@@ -16,7 +16,7 @@
             (onClick)="displayModeValue = displayModeOptions[0].value"></p-button>
     </div>
 
-    <!-- p-checkbox [(ngModel)]="enableTwEmoji" [binary]="true" inputId="checkboxTwEmoji" label="Twemoji" class="ml-5"></p-checkbox -->
+    <p-checkbox [(ngModel)]="enableTwEmoji" [binary]="true" inputId="checkboxTwEmoji" label="Twemoji" class="ml-5"></p-checkbox>
 
     <p-button class="ml-auto" icon="pi pi-ellipsis-h" styleClass="p-button-rounded p-button-secondary p-button-text"
         (onClick)="menu.toggle($event)"></p-button>
@@ -49,7 +49,8 @@
                     </ng-container>
                     <ng-template #twEmojiTemplate>
                         <div class="flex align-items-center justify-content-center twemoji-wrapper">
-                            <img [src]="toTwEmojiURL(emoji.emoji)" class="twemoji" loading="lazy">
+                            <img #twemoji [src]="toTwEmojiURL(emoji.emoji)" class="twemoji" loading="lazy"
+                                (error)="onTwEmojiLoadError(twemoji)">
                         </div>
                     </ng-template>
                 </td>
@@ -72,7 +73,17 @@
                 [style.font-size]="(iconSizeValue/10) + 'em'"
                 [class.selected]="selectedEmoji == emoji"
                 (mouseenter)="onGridItemMouseEnter(emoji)"
-                (click)="onGridItemSelect(emoji)">{{emoji.emoji}}</div>
+                (click)="onGridItemSelect(emoji)">
+                <ng-container *ngIf="!enableTwEmoji; else twEmojiTemplateGrid">{{ emoji.emoji }}</ng-container>
+                <ng-template #twEmojiTemplateGrid>
+                    <div class="flex align-items-center justify-content-center w-full h-full">
+                        <img #twemojiGrid [src]="toTwEmojiURL(emoji.emoji)" loading="lazy"
+                            [style.width]="(iconSizeValue/10) + 'rem'"
+                            [style.height]="(iconSizeValue/10) + 'rem'"
+                            (error)="onTwEmojiLoadError(twemojiGrid)">
+                    </div>
+                </ng-template>
+            </div>
         </ng-container>
     </div>
 </div>
@@ -83,7 +94,10 @@
         </ng-container>
         <ng-template #twEmojiTemplateDetail>
             <div class="flex align-items-center justify-content-center twemoji-wrapper">
-                <img [src]="toTwEmojiURL(detailedEmoji?.emoji)" class="twemoji" loading="lazy">
+                <img #twemojiDetail [src]="toTwEmojiURL(detailedEmoji?.emoji)" class="twemoji"
+                    (load)="onTwEmojiDetailLoad(twemojiDetail, twemojiDetailErrorIcon)"
+                    (error)="onTwEmojiDetailLoadError(twemojiDetail, twemojiDetailErrorIcon)">
+                <i #twemojiDetailErrorIcon class="pi pi-ban text-7xl text-color-secondary hidden"></i>
             </div>
         </ng-template>
     </div>

@@ -162,7 +162,29 @@ export class AppComponent implements OnInit {
     }
   }
 
-  public toTwEmojiURL(codePoint: string): string {
-    return 'https://twemoji.maxcdn.com/svg/' + twemoji.convert.toCodePoint(codePoint) + '.svg';
+  public toTwEmojiURL(unicode: string): string {
+    try {
+      const codePoint = twemoji.convert.toCodePoint(unicode)
+      return `https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/${codePoint}.svg`;
+    } catch (e) {
+      console.log(e);
+      return '';
+    }
+  }
+  public onTwEmojiLoadError(element: HTMLImageElement): void {
+    const parent = element.parentElement;
+    element.remove();
+    const i = document.createElement('i');
+    i.classList.add('pi', 'pi-ban', 'text-4xl', 'text-color-secondary');
+    parent?.appendChild(i);
+  }
+
+  public onTwEmojiDetailLoad(image: HTMLElement, icon: HTMLElement): void {
+    image.classList.remove('hidden');
+    icon.classList.add('hidden');
+  }
+  public onTwEmojiDetailLoadError(image: HTMLElement, icon: HTMLElement): void {
+    image.classList.add('hidden');
+    icon.classList.remove('hidden');
   }
 }
