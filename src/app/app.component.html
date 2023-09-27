@@ -49,8 +49,9 @@
                     </ng-container>
                     <ng-template #twEmojiTemplate>
                         <div class="flex align-items-center justify-content-center twemoji-wrapper">
-                            <img #twemoji [src]="toTwEmojiURL(emoji.emoji)" class="twemoji" loading="lazy"
-                                (error)="onTwEmojiLoadError(twemoji)">
+                            <img #twemoji [src]="toTwEmojiURL(emoji.emoji)" class="twemoji" loading="lazy" style="opacity: 0;"
+                                (load)="onTwEmojiLoaded(twemoji, icon)" (error)="onTwEmojiLoadError(twemoji, icon)">
+                            <i #icon class="pi pi-spin pi-spinner text-4xl text-color-secondary absolute"></i>
                         </div>
                     </ng-template>
                 </td>
@@ -76,11 +77,13 @@
                 (click)="onGridItemSelect(emoji)">
                 <ng-container *ngIf="!enableTwEmoji; else twEmojiTemplateGrid">{{ emoji.emoji }}</ng-container>
                 <ng-template #twEmojiTemplateGrid>
-                    <div class="flex align-items-center justify-content-center w-full h-full">
-                        <img #twemojiGrid [src]="toTwEmojiURL(emoji.emoji)" loading="lazy"
+                    <div class="flex align-items-center justify-content-center w-full h-full relative">
+                        <img #twemojiGrid [src]="toTwEmojiURL(emoji.emoji)" loading="lazy" style="opacity: 0;"
                             [style.width]="(iconSizeValue/10) + 'rem'"
                             [style.height]="(iconSizeValue/10) + 'rem'"
-                            (error)="onTwEmojiLoadError(twemojiGrid)">
+                            (load)="onTwEmojiLoaded(twemojiGrid, iconGrid)"
+                            (error)="onTwEmojiLoadError(twemojiGrid, iconGrid)">
+                        <i #iconGrid class="pi pi-spin pi-spinner text-4xl text-color-secondary absolute"></i>
                     </div>
                 </ng-template>
             </div>
@@ -94,10 +97,10 @@
         </ng-container>
         <ng-template #twEmojiTemplateDetail>
             <div class="flex align-items-center justify-content-center twemoji-wrapper">
-                <img #twemojiDetail [src]="toTwEmojiURL(detailedEmoji?.emoji)" class="twemoji"
-                    (load)="onTwEmojiDetailLoad(twemojiDetail, twemojiDetailErrorIcon)"
-                    (error)="onTwEmojiDetailLoadError(twemojiDetail, twemojiDetailErrorIcon)">
-                <i #twemojiDetailErrorIcon class="pi pi-ban text-7xl text-color-secondary hidden"></i>
+                <img #twemojiDetail [src]="toTwEmojiURL(detailedEmoji?.emoji)" class="twemoji" style="opacity: 0;"
+                    (load)="onTwEmojiDetailLoad(twemojiDetail, iconDetail)"
+                    (error)="onTwEmojiDetailLoadError(twemojiDetail, iconDetail)">
+                <i #iconDetail class="pi pi-ban text-7xl text-color-secondary hidden"></i>
             </div>
         </ng-template>
     </div>

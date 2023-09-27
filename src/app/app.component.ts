@@ -174,20 +174,25 @@ export class AppComponent implements OnInit {
       return '';
     }
   }
-  public onTwEmojiLoadError(element: HTMLImageElement): void {
+  public onTwEmojiLoaded(element: HTMLImageElement, icon: HTMLElement): void {
+    element.style.opacity = '1';
+    icon.remove();
+  }
+  public onTwEmojiLoadError(element: HTMLImageElement, icon: HTMLElement): void {
     const parent = element.parentElement;
     element.remove();
-    const i = document.createElement('i');
-    i.classList.add('pi', 'pi-ban', 'text-4xl', 'text-color-secondary');
-    parent?.appendChild(i);
+    icon.classList.remove('pi-spin', 'pi-spinner');
+    icon.classList.add('pi-ban');
   }
 
   public onTwEmojiDetailLoad(image: HTMLElement, icon: HTMLElement): void {
     image.classList.remove('hidden');
+    image.style.opacity = '1';
     icon.classList.add('hidden');
   }
   public onTwEmojiDetailLoadError(image: HTMLElement, icon: HTMLElement): void {
     image.classList.add('hidden');
+    image.style.opacity = '0';
     icon.classList.remove('hidden');
   }
 
