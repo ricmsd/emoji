@@ -49,9 +49,15 @@
                     </ng-container>
                     <ng-template #twEmojiTemplate>
                         <div class="flex align-items-center justify-content-center twemoji-wrapper">
-                            <img #twemoji [src]="toTwEmojiURL(emoji.emoji)" class="twemoji" loading="lazy" style="opacity: 0;"
-                                (load)="onTwEmojiLoaded(twemoji, icon)" (error)="onTwEmojiLoadError(twemoji, icon)">
-                            <i #icon class="pi pi-spin pi-spinner text-4xl text-color-secondary absolute"></i>
+                            <ng-container *ngIf="!emoji.twEmojiNotFound; else twEmojiNotFound">
+                                <img #twEmoji [src]="toTwEmojiURL(emoji.emoji)" class="twemoji" loading="lazy" style="opacity: 0;"
+                                    (load)="onTwEmojiLoaded(twEmoji, loadingIcon)"
+                                    (error)="onTwEmojiLoadError(emoji, twEmoji, loadingIcon)">
+                                <i #loadingIcon class="pi pi-spin pi-spinner text-4xl text-color-secondary absolute"></i>
+                            </ng-container>
+                            <ng-template #twEmojiNotFound>
+                                <i class="pi pi-ban text-4xl text-color-secondary absolute not-found"></i>
+                            </ng-template>
                         </div>
                     </ng-template>
                 </td>
@@ -75,15 +81,20 @@
                 [class.selected]="selectedEmoji == emoji"
                 (mouseenter)="onGridItemMouseEnter(emoji)"
                 (click)="onGridItemSelect(emoji)">
-                <ng-container *ngIf="!enableTwEmoji; else twEmojiTemplateGrid">{{ emoji.emoji }}</ng-container>
-                <ng-template #twEmojiTemplateGrid>
+                <ng-container *ngIf="!enableTwEmoji; else twEmojiTemplate">{{ emoji.emoji }}</ng-container>
+                <ng-template #twEmojiTemplate>
                     <div class="flex align-items-center justify-content-center w-full h-full relative">
-                        <img #twemojiGrid [src]="toTwEmojiURL(emoji.emoji)" loading="lazy" style="opacity: 0;"
-                            [style.width]="(iconSizeValue/10) + 'rem'"
-                            [style.height]="(iconSizeValue/10) + 'rem'"
-                            (load)="onTwEmojiLoaded(twemojiGrid, iconGrid)"
-                            (error)="onTwEmojiLoadError(twemojiGrid, iconGrid)">
-                        <i #iconGrid class="pi pi-spin pi-spinner text-4xl text-color-secondary absolute"></i>
+                        <ng-container *ngIf="!emoji.twEmojiNotFound; else twEmojiNotFound">
+                            <img #twEmoji [src]="toTwEmojiURL(emoji.emoji)" loading="lazy" style="opacity: 0;"
+                                [style.width]="(iconSizeValue/10) + 'rem'"
+                                [style.height]="(iconSizeValue/10) + 'rem'"
+                                (load)="onTwEmojiLoaded(twEmoji, loadingIcon)"
+                                (error)="onTwEmojiLoadError(emoji, twEmoji, loadingIcon)">
+                            <i #loadingIcon class="pi pi-spin pi-spinner text-4xl text-color-secondary absolute"></i>
+                        </ng-container>
+                        <ng-template #twEmojiNotFound>
+                            <i class="pi pi-ban text-4xl text-color-secondary absolute not-found"></i>
+                        </ng-template>
                     </div>
                 </ng-template>
             </div>
@@ -92,15 +103,20 @@
 </div>
 <div class="footer grid flex-nowrap" style="margin: 0;">
     <div class="emoji col-fixed flex overflow-hidden justify-content-center align-items-center">
-        <ng-container *ngIf="!enableTwEmoji; else twEmojiTemplateDetail">
+        <ng-container *ngIf="!enableTwEmoji; else twEmojiTemplate">
             <a href="#" (click)="writeText(detailedEmoji?.emoji)">{{ detailedEmoji?.emoji }}</a>
         </ng-container>
-        <ng-template #twEmojiTemplateDetail>
+        <ng-template #twEmojiTemplate>
             <div class="flex align-items-center justify-content-center twemoji-wrapper">
-                <img #twemojiDetail [src]="toTwEmojiURL(detailedEmoji?.emoji)" class="twemoji" style="opacity: 0;"
-                    (load)="onTwEmojiDetailLoad(twemojiDetail, iconDetail)"
-                    (error)="onTwEmojiDetailLoadError(twemojiDetail, iconDetail)">
-                <i #iconDetail class="pi pi-ban text-7xl text-color-secondary hidden"></i>
+                <ng-container *ngIf="!detailedEmoji.twEmojiNotFound; else twEmojiNotFound">
+                    <img #twEmoji [src]="toTwEmojiURL(detailedEmoji?.emoji)" class="twemoji" style="opacity: 0;"
+                        (load)="onTwEmojiDetailLoad(twEmoji, loadingIcon)"
+                        (error)="onTwEmojiDetailLoadError(detailedEmoji, twEmoji, loadingIcon)">
+                    <i #loadingIcon class="pi pi-ban text-7xl text-color-secondary hidden"></i>
+                </ng-container>
+                <ng-template #twEmojiNotFound>
+                    <i class="pi pi-ban text-7xl text-color-secondary not-found"></i>
+                </ng-template>
             </div>
         </ng-template>
     </div>

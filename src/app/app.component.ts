@@ -200,11 +200,12 @@ export class AppComponent implements OnInit {
     element.style.opacity = '1';
     icon.remove();
   }
-  public onTwEmojiLoadError(element: HTMLImageElement, icon: HTMLElement): void {
+  public onTwEmojiLoadError(emoji: any, element: HTMLImageElement, icon: HTMLElement): void {
     const parent = element.parentElement;
     element.remove();
     icon.classList.remove('pi-spin', 'pi-spinner');
     icon.classList.add('pi-ban');
+    emoji['twEmojiNotFound'] = true;
   }
 
   public onTwEmojiDetailLoad(image: HTMLElement, icon: HTMLElement): void {
@@ -212,10 +213,11 @@ export class AppComponent implements OnInit {
     image.style.opacity = '1';
     icon.classList.add('hidden');
   }
-  public onTwEmojiDetailLoadError(image: HTMLElement, icon: HTMLElement): void {
+  public onTwEmojiDetailLoadError(emoji: any, image: HTMLElement, icon: HTMLElement): void {
     image.classList.add('hidden');
     image.style.opacity = '0';
     icon.classList.remove('hidden');
+    emoji['twEmojiNotFound'] = true;
   }
 
   public onClickClosePreferences(): void {
