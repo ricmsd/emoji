@@ -1,9 +1,10 @@
 <div class="header flex align-items-center">
     <p-treeSelect [(ngModel)]="selectedGroup" [options]="emojiTreeForFilter" placeholder="Select Item"
-        appendTo="body" (onNodeSelect)="updateEmojis()" containerStyleClass="groupSelect"></p-treeSelect>
+        appendTo="body" (onNodeSelect)="updateEmojis(); saveSettings()" containerStyleClass="groupSelect"></p-treeSelect>
 
     <div class="selectButton ml-5">
-        <p-selectButton [options]="displayModeOptions" [(ngModel)]="displayModeValue" optionLabel="icon" optionValue="value">
+        <p-selectButton [options]="displayModeOptions" [(ngModel)]="displayModeValue" optionLabel="icon" optionValue="value"
+            (onChange)="saveSettings()">
             <ng-template let-item pTemplate>
                 <i [class]="item.icon"></i>
             </ng-template>
@@ -16,7 +17,8 @@
             (onClick)="displayModeValue = displayModeOptions[0].value"></p-button>
     </div>
 
-    <p-checkbox [(ngModel)]="enableTwEmoji" [binary]="true" inputId="checkboxTwEmoji" label="Twemoji" class="ml-5"></p-checkbox>
+    <p-checkbox [(ngModel)]="enableTwEmoji" [binary]="true" inputId="checkboxTwEmoji" label="Twemoji" class="ml-5"
+        (onChange)="saveSettings()"></p-checkbox>
 
     <p-button class="ml-auto" icon="pi pi-ellipsis-h" styleClass="p-button-rounded p-button-secondary p-button-text"
         (onClick)="menu.toggle($event)"></p-button>
@@ -70,7 +72,7 @@
 <div class="body overflow-hidden grid-mode" *ngIf="displayModeValue == 'grid'">
     <div class="flex justify-content-center align-items-center grid-header">
         <p-slider [(ngModel)]="iconSizeValue" [min]="GRID_SLIDER_MIN" [max]="GRID_SLIDER_MAX" [step]="GRID_SLIDER_STEP"
-            class="gridSlider"></p-slider>
+            class="gridSlider" (onChange)="saveSettings()"></p-slider>
     </div>
     <div class="overflow-y-scroll flex flex-wrap align-content-start grid-body" (mousewheel)="onMouseWheelInGrid($event)">
         <ng-container *ngFor="let emoji of emojis">
@@ -108,7 +110,7 @@
         </ng-container>
         <ng-template #twEmojiTemplate>
             <div class="flex align-items-center justify-content-center twemoji-wrapper">
-                <ng-container *ngIf="!detailedEmoji.twEmojiNotFound; else twEmojiNotFound">
+                <ng-container *ngIf="!detailedEmoji?.twEmojiNotFound; else twEmojiNotFound">
                     <img #twEmoji [src]="toTwEmojiURL(detailedEmoji?.emoji)" class="twemoji" style="opacity: 0;"
                         (load)="onTwEmojiDetailLoad(twEmoji, loadingIcon)"
                         (error)="onTwEmojiDetailLoadError(detailedEmoji, twEmoji, loadingIcon)">
@@ -124,11 +126,11 @@
         <div class="group grid flex-nowrap">
             <div class="detail-label col-fixed">Group</div>
             <div *ngIf="!!detailedEmoji" class="detail-value col font-normal">
-                <a href="#" (click)="selectedGroup = emojiTreeForFilter[0] ; updateEmojis()">All Group</a>
+                <a href="#" (click)="selectedGroup = emojiTreeForFilter[0] ; updateEmojis(); saveSettings();">All Group</a>
                 <i class="pi pi-chevron-right ml-1 mr-1"></i>
-                <a href="#" (click)="selectedGroup = detailedEmoji?.parent.data.parent.data.treeNode; updateEmojis()">{{detailedEmoji?.parent.data.parent.data.nameEn}}</a>
+                <a href="#" (click)="selectedGroup = detailedEmoji?.parent.data.parent.data.treeNode; updateEmojis(); saveSettings();">{{detailedEmoji?.parent.data.parent.data.nameEn}}</a>
                 <i class="pi pi-chevron-right ml-1 mr-1"></i>
-                <a href="#" (click)="selectedGroup = detailedEmoji?.parent.data.treeNode; updateEmojis()">{{detailedEmoji?.parent.data.nameEn}}</a></div>
+                <a href="#" (click)="selectedGroup = detailedEmoji?.parent.data.treeNode; updateEmojis(); saveSettings();">{{detailedEmoji?.parent.data.nameEn}}</a></div>
         </div>
         <div class="grid flex-nowrap">
             <div class="detail-label col-fixed">Name</div>
@@ -186,7 +188,8 @@
     <div class="ml-2">
         <ng-container *ngFor="let status of emojiStatuses">
             <div class="field-checkbox">
-                <p-checkbox name="selectedStatus" [value]="status" [(ngModel)]="selectedEmojiStatus" [inputId]="status"></p-checkbox>
+                <p-checkbox name="selectedStatus" [value]="status" [(ngModel)]="selectedEmojiStatus" [inputId]="status"
+                    (onChange)="saveSettings()"></p-checkbox>
                 <label [for]="status"><p-badge [value]="status" [severity]="getSeverity(status)"></p-badge></label>
             </div>
         </ng-container>

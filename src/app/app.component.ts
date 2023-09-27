@@ -26,6 +26,7 @@ declare var twemoji: {
 export class AppComponent implements OnInit {
   public emojiTree!: TreeNode[];
   public emojiTreeForFilter!: TreeNode[];
+  private savedSelectedGroupKey!: string;
   public selectedGroup!: TreeNode;
   public emojis!: any[];
   public selectedEmoji!: any;
@@ -54,6 +55,34 @@ export class AppComponent implements OnInit {
   constructor(
     private emojiService: EmojiService,
     private messageService: MessageService) {
+    this.loadSettings();
+  }
+
+  private loadSettings(): void {
+    const defaultSettings = {
+      displayModeValue: 'list',
+      iconSizeValue: 65,
+      selectedEmojiStatus: ['fully-qualified'],
+      enableTwEmoji: false,
+      selectedGroupKey: 'allgroup'
+    };
+    const settingsJSON = localStorage.getItem('settings-0.0.0');
+    const settings = settingsJSON ? JSON.parse(settingsJSON) : defaultSettings;
+    this.displayModeValue = settings.displayModeValue;
+    this.iconSizeValue = settings.iconSizeValue;
+    this.selectedEmojiStatus = settings.selectedEmojiStatus;
+    this.enableTwEmoji = settings.enableTwEmoji;
+    this.savedSelectedGroupKey = settings.selectedGroupKey;
+  }
+  public saveSettings(): void {
+    localStorage.setItem('settings-0.0.0', JSON.stringify({
+      displayModeValue: this.displayModeValue,
+      iconSizeValue: this.iconSizeValue,
+      selectedEmojiStatus: this.selectedEmojiStatus,
+      enableTwEmoji: this.enableTwEmoji,
+      selectedGroupKey: this.selectedGroup.key
+    }));
+    this.savedSelectedGroupKey = <string>this.selectedGroup.key;
   }
 
   ngOnInit(): void {
@@ -64,6 +93,7 @@ export class AppComponent implements OnInit {
   }
 
   public updateEmojiTree(): void {
+    let selectedGroup;
     const allgroup: TreeNode = {
       label: 'All Group',
       data: { children: [], data: { type: 'allgroup' } },
@@ -80,6 +110,9 @@ export class AppComponent implements OnInit {
         key: i.data['id']
       };
       i.data['treeNode'] = group;
+      if (group.key === this.savedSelectedGroupKey) {
+        selectedGroup = group;
+      }
       allgroup.children?.push(group);
       allgroup.data.children.push(i);
       i.children?.forEach(j => {
@@ -89,9 +122,16 @@ export class AppComponent implements OnInit {
           key: j.data['id']
         };
         j.data['treeNode'] = subgroup;
+        if (subgroup.key === this.savedSelectedGroupKey) {
+          selectedGroup = subgroup;
+        }
         group.children?.push(subgroup);
       });
     });
+
+    this.emojiTreeForFilter = treeForFilter;
+    this.selectedGroup = selectedGroup ? selectedGroup : allgroup;
+
     // add emoji count to group/subgroup label;
     const counter = (node: TreeNode) => {
       if (!node.children) {
@@ -110,8 +150,6 @@ export class AppComponent implements OnInit {
     const count = counter(allgroup);
     allgroup.label += ` (${count})`;
 
-    this.emojiTreeForFilter = treeForFilter;
-    this.selectedGroup = treeForFilter[0];
     this.updateEmojis();
   }
 
@@ -179,15 +217,20 @@ export class AppComponent implements OnInit {
     if (wheelEvent.deltaY < 0) {
       if (this.iconSizeValue < this.GRID_SLIDER_MAX) {
         this.iconSizeValue += this.GRID_SLIDER_STEP;
+        this.saveSettings();
       }
     } else if (wheelEvent.deltaY > 0) {
       if (this.iconSizeValue > this.GRID_SLIDER_MIN) {
         this.iconSizeValue -= this.GRID_SLIDER_STEP;
+        this.saveSettings();
       }
     }
   }
 
   public toTwEmojiURL(unicode: string): string {
+    if (!unicode) {
+      return '';
+    }
     try {
       const codePoint = twemoji.convert.toCodePoint(unicode)
       return `https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/${codePoint}.svg`;
@@ -216,8 +259,10 @@ export class AppComponent implements OnInit {
   public onTwEmojiDetailLoadError(emoji: any, image: HTMLElement, icon: HTMLElement): void {
     image.classList.add('hidden');
     image.style.opacity = '0';
-    icon.classList.remove('hidden');
-    emoji['twEmojiNotFound'] = true;
+    if (emoji) {
+      icon.classList.remove('hidden');
+      emoji['twEmojiNotFound'] = true;
+    }
   }
 
   public onClickClosePreferences(): void {
