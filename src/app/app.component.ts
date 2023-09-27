@@ -26,7 +26,7 @@ declare var twemoji: {
 export class AppComponent implements OnInit {
   public emojiTree!: TreeNode[];
   public emojiTreeForFilter!: TreeNode[];
-  public selectedNode!: TreeNode;
+  public selectedGroup!: TreeNode;
   public emojis!: any[];
   public selectedEmoji!: any;
   public detailedEmoji!: any;
@@ -57,40 +57,62 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.emojiService.getEmoji().then((emojisTree) => {
-      this.emojiTree = emojisTree;
-      const allgroup: TreeNode = {
-        label: 'All Group',
-        data: { children: [], data: { type: 'allgroup' } },
-        children: [],
-        key: 'allgroup',
-        expanded: true
-      };
-      const treeForFilter: TreeNode[] = [allgroup];
-      emojisTree.forEach(i => {
-        const group: TreeNode = {
-          label: i.data['nameEn'],
-          data: i,
-          children: [],
-          key: i.data['id']
-        };
-        i.data['treeNode'] = group;
-        allgroup.children?.push(group);
-        allgroup.data.children.push(i);
-        i.children?.forEach(j => {
-          const subgroup: TreeNode = {
-            label: j.data['nameEn'],
-            data: j,
-            key: j.data['id']
-          };
-          j.data['treeNode'] = subgroup;
-          group.children?.push(subgroup);
-        });
-      });
-      this.emojiTreeForFilter = treeForFilter;
-      this.selectedNode = treeForFilter[0];
-      this.updateEmojis();
+    this.emojiService.getEmoji().then((emojiTree) => {
+      this.emojiTree = emojiTree;
+      this.updateEmojiTree();
     });
+  }
+
+  public updateEmojiTree(): void {
+    const allgroup: TreeNode = {
+      label: 'All Group',
+      data: { children: [], data: { type: 'allgroup' } },
+      children: [],
+      key: 'allgroup',
+      expanded: true
+    };
+    const treeForFilter: TreeNode[] = [allgroup];
+    this.emojiTree.forEach(i => {
+      const group: TreeNode = {
+        label: i.data['nameEn'],
+        data: i,
+        children: [],
+        key: i.data['id']
+      };
+      i.data['treeNode'] = group;
+      allgroup.children?.push(group);
+      allgroup.data.children.push(i);
+      i.children?.forEach(j => {
+        const subgroup: TreeNode = {
+          label: j.data['nameEn'],
+          data: j,
+          key: j.data['id']
+        };
+        j.data['treeNode'] = subgroup;
+        group.children?.push(subgroup);
+      });
+    });
+    // add emoji count to group/subgroup label;
+    const counter = (node: TreeNode) => {
+      if (!node.children) {
+        return node.data.children.filter((i: any) =>
+          this.selectedEmojiStatus.includes(i['data']['status'])).length;
+      } else {
+        let total = 0;
+        for (let child of node.children || []) {
+          const count = counter(child);
+          child.label += ` (${count})`;
+          total += count;
+        }
+        return total;
+      }
+    };
+    const count = counter(allgroup);
+    allgroup.label += ` (${count})`;
+
+    this.emojiTreeForFilter = treeForFilter;
+    this.selectedGroup = treeForFilter[0];
+    this.updateEmojis();
   }
 
   public updateEmojis(): void {
@@ -104,7 +126,7 @@ export class AppComponent implements OnInit {
         });
       }
     };
-    pushEmojis(this.selectedNode.data);
+    pushEmojis(this.selectedGroup.data);
     this.emojis = emojis;
   }
 
@@ -198,6 +220,6 @@ export class AppComponent implements OnInit {
 
   public onClickClosePreferences(): void {
     this.preferencesVisible = false;
-    this.updateEmojis();
+    this.updateEmojiTree();
   }
 }

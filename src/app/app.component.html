@@ -1,5 +1,5 @@
 <div class="header flex align-items-center">
-    <p-treeSelect [(ngModel)]="selectedNode" [options]="emojiTreeForFilter" placeholder="Select Item"
+    <p-treeSelect [(ngModel)]="selectedGroup" [options]="emojiTreeForFilter" placeholder="Select Item"
         appendTo="body" (onNodeSelect)="updateEmojis()" containerStyleClass="groupSelect"></p-treeSelect>
 
     <div class="selectButton ml-5">
@@ -108,11 +108,11 @@
         <div class="group grid flex-nowrap">
             <div class="detail-label col-fixed">Group</div>
             <div *ngIf="!!detailedEmoji" class="detail-value col font-normal">
-                <a href="#" (click)="selectedNode = emojiTreeForFilter[0] ; updateEmojis()">All Group</a>
+                <a href="#" (click)="selectedGroup = emojiTreeForFilter[0] ; updateEmojis()">All Group</a>
                 <i class="pi pi-chevron-right ml-1 mr-1"></i>
-                <a href="#" (click)="selectedNode = detailedEmoji?.parent.data.parent.data.treeNode; updateEmojis()">{{detailedEmoji?.parent.data.parent.data.nameEn}}</a>
+                <a href="#" (click)="selectedGroup = detailedEmoji?.parent.data.parent.data.treeNode; updateEmojis()">{{detailedEmoji?.parent.data.parent.data.nameEn}}</a>
                 <i class="pi pi-chevron-right ml-1 mr-1"></i>
-                <a href="#" (click)="selectedNode = detailedEmoji?.parent.data.treeNode; updateEmojis()">{{detailedEmoji?.parent.data.nameEn}}</a></div>
+                <a href="#" (click)="selectedGroup = detailedEmoji?.parent.data.treeNode; updateEmojis()">{{detailedEmoji?.parent.data.nameEn}}</a></div>
         </div>
         <div class="grid flex-nowrap">
             <div class="detail-label col-fixed">Name</div>
