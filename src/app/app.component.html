@@ -66,7 +66,7 @@
         <p-slider [(ngModel)]="iconSizeValue" [min]="GRID_SLIDER_MIN" [max]="GRID_SLIDER_MAX" [step]="GRID_SLIDER_STEP"
             class="gridSlider"></p-slider>
     </div>
-    <div class="overflow-y-scroll flex flex-wrap grid-body" (mousewheel)="onMouseWheelInGrid($event)">
+    <div class="overflow-y-scroll flex flex-wrap align-content-start grid-body" (mousewheel)="onMouseWheelInGrid($event)">
         <ng-container *ngFor="let emoji of emojis">
             <div class="grid-item border-round flex justify-content-center align-items-center overflow-hidden"
                 [style.width]="(230 * (iconSizeValue/100)) + 'px'"
