@@ -12,6 +12,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { SliderModule } from 'primeng/slider';
 import { CheckboxModule } from 'primeng/checkbox';
 import { MenuModule } from 'primeng/menu';
+import { DialogModule } from 'primeng/dialog';
 
 import { AppComponent } from './app.component';
 import { EmojiService } from 'src/service/emoji.service';
@@ -34,7 +35,8 @@ import { EmojiService } from 'src/service/emoji.service';
     SelectButtonModule,
     SliderModule,
     CheckboxModule,
-    MenuModule
+    MenuModule,
+    DialogModule
   ],
   providers: [EmojiService],
   bootstrap: [AppComponent]

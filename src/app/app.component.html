@@ -161,3 +161,18 @@
 </p-toast>
 
 <p-menu #menu [model]="menuItems" [popup]="true"></p-menu>
+
+<p-dialog header="Preferences" [(visible)]="preferencesVisible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+    <h4>Filtering by status</h4>
+    <div class="ml-2">
+        <ng-container *ngFor="let status of emojiStatuses">
+            <div class="field-checkbox">
+                <p-checkbox name="selectedStatus" [value]="status" [(ngModel)]="selectedEmojiStatus" [inputId]="status"></p-checkbox>
+                <label [for]="status"><p-badge [value]="status" [severity]="getSeverity(status)"></p-badge></label>
+            </div>
+        </ng-container>
+    </div>
+    <ng-template pTemplate="footer">
+        <p-button (click)="onClickClosePreferences()" label="Close" styleClass="p-button-text"></p-button>
+    </ng-template>
+</p-dialog>

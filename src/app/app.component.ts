@@ -29,7 +29,6 @@ export class AppComponent implements OnInit {
   public selectedNode!: TreeNode;
   public emojis!: any[];
   public selectedEmoji!: any;
-  public selectedStatus: string[] = ['component', 'fully-qualified', 'minimally-qualified', 'unqualified'];
   public detailedEmoji!: any;
 
   public displayModeValue: 'list' | 'grid' = 'list';
@@ -45,8 +44,12 @@ export class AppComponent implements OnInit {
 
   public enableTwEmoji: boolean = false;
   public menuItems: MenuItem[] = [
+    { label: 'Preferences', icon: 'pi pi-cog', command: () => { this.preferencesVisible = true; } },
     { label: 'Licenses', icon: 'pi pi-external-link', url: '/assets/licenses.html' }
   ];
+  public preferencesVisible: boolean = false;
+  public emojiStatuses: string[] = ['component', 'fully-qualified', 'minimally-qualified', 'unqualified'];
+  public selectedEmojiStatus: string[] = ['fully-qualified'];
 
   constructor(
     private emojiService: EmojiService,
@@ -93,7 +96,7 @@ export class AppComponent implements OnInit {
   public updateEmojis(): void {
     const emojis: any[] = [];
     const pushEmojis = (node: TreeNode) => {
-      if (node.data['type'] === 'emoji') {
+      if (node.data['type'] === 'emoji' && this.selectedEmojiStatus.includes(node.data['status'])) {
         emojis.push(node.data);
       } else {
         node.children?.forEach(i => {
@@ -186,5 +189,10 @@ export class AppComponent implements OnInit {
   public onTwEmojiDetailLoadError(image: HTMLElement, icon: HTMLElement): void {
     image.classList.add('hidden');
     icon.classList.remove('hidden');
+  }
+
+  public onClickClosePreferences(): void {
+    this.preferencesVisible = false;
+    this.updateEmojis();
   }
 }
