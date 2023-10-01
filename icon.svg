@@ -25,8 +25,8 @@
      inkscape:document-units="px"
      showgrid="false"
      inkscape:zoom="1.2255859"
-     inkscape:cx="71.80239"
-     inkscape:cy="414.90359"
+     inkscape:cx="71.802393"
+     inkscape:cy="414.9036"
      inkscape:window-width="2560"
      inkscape:window-height="1511"
      inkscape:window-x="-9"
@@ -68,7 +68,7 @@
        r="180" />
     <path
        sodipodi:type="star"
-       style="fill:none;fill-opacity:1;stroke:#24292e;stroke-width:24;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:#24292e;fill-opacity:1;stroke:#24292e;stroke-width:24;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
        id="path3"
        inkscape:flatsided="false"
        sodipodi:sides="5"
