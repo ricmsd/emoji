@@ -46,7 +46,7 @@ export class AppComponent implements OnInit {
   public enableTwEmoji: boolean = false;
   public menuItems: MenuItem[] = [
     { label: 'Preferences', icon: 'pi pi-cog', command: () => { this.preferencesVisible = true; } },
-    { label: 'Licenses', icon: 'pi pi-external-link', url: '/assets/licenses.html' },
+    { label: 'Licenses', icon: 'pi pi-external-link', url: './assets/licenses.html' },
     { label: 'GitHub', icon: 'pi pi-github', url: 'https://github.com/ricmsd/emoji' },
   ];
   public preferencesVisible: boolean = false;
