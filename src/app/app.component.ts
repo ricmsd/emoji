@@ -3,6 +3,10 @@ import { MenuItem, TreeNode } from 'primeng/api';
 import { EmojiService } from 'src/service/emoji.service';
 import { MessageService } from 'primeng/api';
 
+const StorageKey = {
+  Settings: <string>'settings-0.0.1'
+} as const;
+
 interface Column {
   field: string;
   header: string;
@@ -52,11 +56,16 @@ export class AppComponent implements OnInit {
   public preferencesVisible: boolean = false;
   public emojiStatuses: string[] = ['component', 'fully-qualified', 'minimally-qualified', 'unqualified'];
   public selectedEmojiStatus: string[] = ['fully-qualified'];
+  public skinTones: string[] = ['light skin tone', 'medium-light skin tone', 'medium skin tone', 'medium-dark skin tone', 'dark skin tone'];
+  public selectedSkinTones: string[] = [];
+  public reSelectedSkinTones?: RegExp;
+  static readonly RE_NAME_SKIN_TONE = /(.+): (.+)skin tone/;
 
   constructor(
     private emojiService: EmojiService,
     private messageService: MessageService) {
     this.loadSettings();
+    this.updateReSelectedSkinTone();
   }
 
   private loadSettings(): void {
@@ -65,23 +74,26 @@ export class AppComponent implements OnInit {
       iconSizeValue: 65,
       selectedEmojiStatus: ['fully-qualified'],
       enableTwEmoji: false,
-      selectedGroupKey: 'allgroup'
+      selectedGroupKey: 'allgroup',
+      selectedSkinTones: [...this.skinTones],
     };
-    const settingsJSON = localStorage.getItem('settings-0.0.0');
+    const settingsJSON = localStorage.getItem(StorageKey.Settings);
     const settings = settingsJSON ? JSON.parse(settingsJSON) : defaultSettings;
     this.displayModeValue = settings.displayModeValue;
     this.iconSizeValue = settings.iconSizeValue;
     this.selectedEmojiStatus = settings.selectedEmojiStatus;
     this.enableTwEmoji = settings.enableTwEmoji;
     this.savedSelectedGroupKey = settings.selectedGroupKey;
+    this.selectedSkinTones = settings.selectedSkinTones;
   }
   public saveSettings(): void {
-    localStorage.setItem('settings-0.0.0', JSON.stringify({
+    localStorage.setItem(StorageKey.Settings, JSON.stringify({
       displayModeValue: this.displayModeValue,
       iconSizeValue: this.iconSizeValue,
       selectedEmojiStatus: this.selectedEmojiStatus,
       enableTwEmoji: this.enableTwEmoji,
-      selectedGroupKey: this.selectedGroup.key
+      selectedGroupKey: this.selectedGroup.key,
+      selectedSkinTones: this.selectedSkinTones,
     }));
     this.savedSelectedGroupKey = <string>this.selectedGroup.key;
   }
@@ -91,6 +103,21 @@ export class AppComponent implements OnInit {
       this.emojiTree = emojiTree;
       this.updateEmojiTree();
     });
+  }
+
+  private isDisplayEmoji(data: any): boolean {
+    // check skine tone.
+    let matchSkinTone = true;
+    const nameEn: string = data['nameEn'];
+    if (nameEn.match(AppComponent.RE_NAME_SKIN_TONE)) {
+      if (this.selectedSkinTones.length === 0) {
+        matchSkinTone = false;
+      } else {
+        matchSkinTone = !!nameEn.match(<RegExp>this.reSelectedSkinTones);
+      }
+    }
+    // check status
+    return this.selectedEmojiStatus.includes(data['status']) && matchSkinTone;
   }
 
   public updateEmojiTree(): void {
@@ -136,8 +163,7 @@ export class AppComponent implements OnInit {
     // add emoji count to group/subgroup label;
     const counter = (node: TreeNode) => {
       if (!node.children) {
-        return node.data.children.filter((i: any) =>
-          this.selectedEmojiStatus.includes(i['data']['status'])).length;
+        return node.data.children.filter((i: any) => this.isDisplayEmoji(i['data'])).length;
       } else {
         let total = 0;
         for (let child of node.children || []) {
@@ -157,7 +183,7 @@ export class AppComponent implements OnInit {
   public updateEmojis(): void {
     const emojis: any[] = [];
     const pushEmojis = (node: TreeNode) => {
-      if (node.data['type'] === 'emoji' && this.selectedEmojiStatus.includes(node.data['status'])) {
+      if (node.data['type'] === 'emoji' && this.isDisplayEmoji(node.data)) {
         emojis.push(node.data);
       } else {
         node.children?.forEach(i => {
@@ -266,8 +292,29 @@ export class AppComponent implements OnInit {
     }
   }
 
+  public getSkinToneLabel(skinTone: string): string {
+    switch(skinTone) {
+      case 'light skin tone':
+        return skinTone + ' (&#x1F91A;&#x1F3FB;)';
+      case 'medium-light skin tone':
+        return skinTone + ' (&#x1F91A;&#x1F3FC;)';
+      case 'medium skin tone':
+        return skinTone + ' (&#x1F91A;&#x1F3FD;)';
+      case 'medium-dark skin tone':
+        return skinTone + ' (&#x1F91A;&#x1F3FE;)';
+      case 'dark skin tone':
+        return skinTone + ' (&#x1F91A;&#x1F3FF;)';
+    }
+    return '';
+  }
+
+  public updateReSelectedSkinTone(): void {
+    this.reSelectedSkinTones = new RegExp('[:,] (' + this.selectedSkinTones.join('|') + ')');
+  }
+
   public onClickClosePreferences(): void {
     this.preferencesVisible = false;
+    this.updateReSelectedSkinTone();
     this.updateEmojiTree();
   }
 }

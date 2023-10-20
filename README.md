@@ -8,6 +8,7 @@ This is yet another emoji search website. See [GitHub Pages](https://ricmsd.gith
 - Copy emoji and code points to clipboard
 - Light mode/dark mode switching
 - Filtering by status (fully-qualified, minimally-qualified, etc.)
+- Filtering by skin tone (light skin tone, dark skin tone, etc.)
 
 ## Screenshot
 |List View|Grid View|

@@ -198,6 +198,16 @@
             </div>
         </ng-container>
     </div>
+    <h4>Filtering by skin tone</h4>
+    <div class="ml-2">
+        <ng-container *ngFor="let skinTone of skinTones">
+            <div class="field-checkbox">
+                <p-checkbox name="selectedSkinTone" [value]="skinTone" [(ngModel)]="selectedSkinTones" [inputId]="skinTone"
+                    (onChange)="saveSettings()"></p-checkbox>
+                <label [for]="skinTone" [innerHTML]="getSkinToneLabel(skinTone)"></label>
+            </div>
+        </ng-container>
+    </div>
     <ng-template pTemplate="footer">
         <p-button (click)="onClickClosePreferences()" label="Close" styleClass="p-button-text"></p-button>
     </ng-template>
