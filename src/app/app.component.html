@@ -111,13 +111,17 @@
         <ng-template #twEmojiTemplate>
             <div class="flex align-items-center justify-content-center twemoji-wrapper">
                 <ng-container *ngIf="!detailedEmoji?.twEmojiNotFound; else twEmojiNotFound">
-                    <img #twEmoji [src]="toTwEmojiURL(detailedEmoji?.emoji)" class="twemoji" style="opacity: 0;"
-                        (load)="onTwEmojiDetailLoad(twEmoji, loadingIcon)"
-                        (error)="onTwEmojiDetailLoadError(detailedEmoji, twEmoji, loadingIcon)">
-                    <i #loadingIcon class="pi pi-ban text-7xl text-color-secondary hidden"></i>
+                    <a href="#" (click)="writeText(detailedEmoji?.emoji)">
+                        <img #twEmoji [src]="toTwEmojiURL(detailedEmoji?.emoji)" class="twemoji" style="opacity: 0;"
+                            (load)="onTwEmojiDetailLoad(twEmoji, loadingIcon)"
+                            (error)="onTwEmojiDetailLoadError(detailedEmoji, twEmoji, loadingIcon)">
+                        <i #loadingIcon class="pi pi-ban text-7xl text-color-secondary hidden"></i>
+                    </a>
                 </ng-container>
                 <ng-template #twEmojiNotFound>
-                    <i class="pi pi-ban text-7xl text-color-secondary not-found"></i>
+                    <a href="#" (click)="writeText(detailedEmoji?.emoji)">
+                        <i class="pi pi-ban text-7xl text-color-secondary not-found"></i>
+                    </a>
                 </ng-template>
             </div>
         </ng-template>
