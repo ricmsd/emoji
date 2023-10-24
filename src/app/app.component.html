@@ -28,6 +28,7 @@
         [scrollable]="true" scrollHeight="flex"
         [virtualScroll]="true" [virtualScrollItemSize]="81"
         selectionMode="single" dataKey="id" [(selection)]="selectedEmoji" (onRowSelect)="onRowSelect()"
+        [filters]="filters" (onFilter)="onTableRowFiltered($event)"
         styleClass="p-datatable-sm">
         <ng-template pTemplate="header">
             <tr>

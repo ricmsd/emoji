@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuItem, TreeNode } from 'primeng/api';
+import { FilterMetadata, MenuItem, TreeNode } from 'primeng/api';
 import { EmojiService } from 'src/service/emoji.service';
 import { MessageService } from 'primeng/api';
+import { TableFilterEvent } from 'primeng/table';
 
 const StorageKey = {
   Settings: <string>'settings-0.0.1'
@@ -35,6 +36,12 @@ export class AppComponent implements OnInit {
   public emojis!: any[];
   public selectedEmoji!: any;
   public detailedEmoji!: any;
+
+  public filters: {[s: string]: FilterMetadata | FilterMetadata[]} = 
+    {
+      emoji: { value: null, matchMode: 'equals' },
+      nameEn: { value: null, matchMode: 'contains' }
+    };
 
   public displayModeValue: 'list' | 'grid' = 'list';
   public displayModeOptions: any[] = [
@@ -316,5 +323,9 @@ export class AppComponent implements OnInit {
     this.preferencesVisible = false;
     this.updateReSelectedSkinTone();
     this.updateEmojiTree();
+  }
+
+  public onTableRowFiltered(event: TableFilterEvent): void {
+    this.filters = <{[s: string]: FilterMetadata}>event.filters;
   }
 }
